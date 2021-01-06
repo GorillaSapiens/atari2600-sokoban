@@ -96,6 +96,10 @@ sub process() {
 	print "\t.byte \%$tmp ; '$right' ; right\n";
 	$count++;
 
+	# TODO FIX this is for testing
+	if ($nivelo == 1) { # really level 0
+		$corners = "####";
+	}
 
 	$tmp = $corners . "    ";
 	$tmp =~ s/#/1/g;

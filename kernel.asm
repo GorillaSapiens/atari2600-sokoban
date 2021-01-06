@@ -17,8 +17,10 @@
 PlayfieldData = $80 ; 64 bytes cleared, only 60 are used
 DrawCounter = $BE ; 1 byte
 BoardY = $BF ; 1 byte
+
 LevelPointer = $C0 ; two bytes
 LeftButtonState = $C2 ; one byte
+Nivelo = $C3 ; one byte
 
 ;;;;;
 ; Clear the playfield area, setting everything to 0
@@ -258,10 +260,19 @@ CornerFill3
 	txa
 CornerFill4
 	; there is no bit 4 =)
+	rts
 
+ResetLevelPointer
+	lda #<Levels
+	sta LevelPointer
+	lda #>Levels
+	sta LevelPointer+1
+	lda #0
+	sta Nivelo
 	rts
 
 NextLevel
+	inc Nivelo
 	ldy #$0D
 NextLevelNonzero
 	iny
@@ -281,21 +292,33 @@ NextLevelAddition
 	lda #$0
 	adc LevelPointer+1
 	sta LevelPointer+1
+
+	; check for the end, and wrap
+	ldy #0
+	lda (LevelPointer),Y
+	cmp #$ff
+	bne NextLevelFini
+	jsr ResetLevelPointer
+
+NextLevelFini
 	jsr PopulatePF 
 	rts
 
 
 
 Reset
+	; initialize processor
+	CLC
+	CLD
+	CLI
+	CLV
+
 	; set the stack pointer
 	ldx #$ff
 	txs
 
 	; set the level pointer
-	lda #<Levels
-	sta LevelPointer
-	lda #>Levels
-	sta LevelPointer+1
+	jsr ResetLevelPointer
 
 	; set up the playfield data
 	jsr PopulatePF
