@@ -1,0 +1,6 @@
+use left joystick controller
+
+up/down/left/right moves the pusher
+fire resets the level
+game select changes the level
+left difficulty controls sound A=on, b=off

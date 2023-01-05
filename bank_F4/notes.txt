@@ -1,0 +1,29 @@
+https://alienbill.com/2600/101/docs/stella.html
+
+setup
+map2
+goal even
+map
+goal even
+map
+
+setup
+map2
+goal odd
+map
+goal odd      sprite
+map           sprite
+
+setup         sprite
+map2          sprite
+goal even     sprite
+map           sprite
+goal even     sprite
+map           sprite
+
+setup         sprite
+map2          sprite
+goal odd      sprite
+map
+goal odd
+map
