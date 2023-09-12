@@ -98,7 +98,8 @@ whoop
 
         sta WSYNC
 
-        lda #41 ; 76 * 35 / 64
+        ;lda #41 ; 76 * 35 / 64
+        lda #40 ; 76 * 35 / 64
         sta TIM64T
 
 audio
@@ -144,7 +145,7 @@ vblank_wait ; wait for timer to expire
 
         lda MOVECOUNTER
         cmp #$0
-        bne SixLinesLogo
+        bne SixLinesScore
         jmp SixLinesLogo
 
         ; 192 scanlines of picture...
@@ -156,27 +157,13 @@ SixLinesLogo
         stx tmp1
 
 ;;        LOGO
-        ;sta WSYNC
-        ;sta WSYNC
-        ;sta WSYNC
-        ;sta WSYNC
-        ;sta WSYNC
-        ;sta WSYNC
-        ;jmp EndLogo
-
         ldx tmp0          ; 67 + 3
         stx COLUPF        ; 3 + 3
 
-        ; repeated below...
-        ;iny               ; 67 + 2
-        ;lda (LevelEnd),Y  ; 69 + 5
-        ;sta GRP1          ; 74 + 3
-
         ldx tmp1          ; 77 + 3
 
-        jmp SixLinesLogo2
-
-        align 256
+        ;jmp SixLinesLogo2
+        ;align 256
 SixLinesLogo2
         sta WSYNC
 

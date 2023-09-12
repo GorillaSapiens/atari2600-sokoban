@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 
-$maxlevels_per_bank = 9;
+$maxlevels_per_bank = 10;
 $maxlevels = $maxlevels_per_bank * 8;
 $maxheight = 16;
 $maxboxes = 15;
