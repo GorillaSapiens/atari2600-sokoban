@@ -11,6 +11,12 @@ sub ccount($) {
 sub thingie($$) {
    my ($i, $arg) = @_;
    $arg =~ s/[\x0a\x0d]//g;
+   while (length($arg) < 40) {
+      $arg .= ' ';
+   }
+
+   my $ao = "|";
+
    @arg = split //, $arg;
 
 # 4..7 7..0 0..7
@@ -25,239 +31,294 @@ sub thingie($$) {
    if ($a ne ' ') {
       $pf0 |= 1 << 4;
    }
+   $ao .= $a;
 
    $a = shift @arg;
    if ($a ne ' ') {
       $pf0 |= 1 << 5;
    }
+   $ao .= $a;
 
    $a = shift @arg;
    if ($a ne ' ') {
       $pf0 |= 1 << 6;
    }
+   $ao .= $a;
 
    $a = shift @arg;
    if ($a ne ' ') {
       $pf0 |= 1 << 7;
    }
+   $ao .= $a;
+
+   $ao .= '|';
 
    $a = shift @arg;
    if ($a ne ' ') {
       $pf1 |= 1 << 7;
    }
+   $ao .= $a;
 
    $a = shift @arg;
    if ($a ne ' ') {
       $pf1 |= 1 << 6;
    }
+   $ao .= $a;
 
    $a = shift @arg;
    if ($a ne ' ') {
       $pf1 |= 1 << 5;
    }
+   $ao .= $a;
 
    $a = shift @arg;
    if ($a ne ' ') {
       $pf1 |= 1 << 4;
    }
+   $ao .= $a;
 
    $a = shift @arg;
    if ($a ne ' ') {
       $pf1 |= 1 << 3;
    }
+   $ao .= $a;
 
    $a = shift @arg;
    if ($a ne ' ') {
       $pf1 |= 1 << 2;
    }
+   $ao .= $a;
 
    $a = shift @arg;
    if ($a ne ' ') {
       $pf1 |= 1 << 1;
    }
+   $ao .= $a;
 
    $a = shift @arg;
    if ($a ne ' ') {
       $pf1 |= 1 << 0;
    }
+   $ao .= $a;
+
+   $ao .= '|';
 
    $a = shift @arg;
    if ($a ne ' ') {
       $pf2 |= 1 << 0;
    }
+   $ao .= $a;
 
    $a = shift @arg;
    if ($a ne ' ') {
       $pf2 |= 1 << 1;
    }
+   $ao .= $a;
 
    $a = shift @arg;
    if ($a ne ' ') {
       $pf2 |= 1 << 2;
    }
+   $ao .= $a;
 
    $a = shift @arg;
    if ($a ne ' ') {
       $pf2 |= 1 << 3;
    }
+   $ao .= $a;
 
    $a = shift @arg;
    if ($a ne ' ') {
       $pf2 |= 1 << 4;
    }
+   $ao .= $a;
 
    $a = shift @arg;
    if ($a ne ' ') {
       $pf2 |= 1 << 5;
    }
+   $ao .= $a;
 
    $a = shift @arg;
    if ($a ne ' ') {
       $pf2 |= 1 << 6;
    }
+   $ao .= $a;
 
    $a = shift @arg;
    if ($a ne ' ') {
       $pf2 |= 1 << 7;
    }
+   $ao .= $a;
+
+   $ao .= '|';
 
    $a = shift @arg;
    if ($a ne ' ') {
       $pf3 |= 1 << 4;
    }
+   $ao .= $a;
 
    $a = shift @arg;
    if ($a ne ' ') {
       $pf3 |= 1 << 5;
    }
+   $ao .= $a;
 
    $a = shift @arg;
    if ($a ne ' ') {
       $pf3 |= 1 << 6;
    }
+   $ao .= $a;
 
    $a = shift @arg;
    if ($a ne ' ') {
       $pf3 |= 1 << 7;
    }
+   $ao .= $a;
+
+   $ao .= '|';
 
    $a = shift @arg;
    if ($a ne ' ') {
       $pf4 |= 1 << 7;
    }
+   $ao .= $a;
 
    $a = shift @arg;
    if ($a ne ' ') {
       $pf4 |= 1 << 6;
    }
+   $ao .= $a;
 
    $a = shift @arg;
    if ($a ne ' ') {
       $pf4 |= 1 << 5;
    }
+   $ao .= $a;
 
    $a = shift @arg;
    if ($a ne ' ') {
       $pf4 |= 1 << 4;
    }
+   $ao .= $a;
 
    $a = shift @arg;
    if ($a ne ' ') {
       $pf4 |= 1 << 3;
    }
+   $ao .= $a;
 
    $a = shift @arg;
    if ($a ne ' ') {
       $pf4 |= 1 << 2;
    }
+   $ao .= $a;
 
    $a = shift @arg;
    if ($a ne ' ') {
       $pf4 |= 1 << 1;
    }
+   $ao .= $a;
 
    $a = shift @arg;
    if ($a ne ' ') {
       $pf4 |= 1 << 0;
    }
+   $ao .= $a;
+
+   $ao .= '|';
 
    $a = shift @arg;
    if ($a ne ' ') {
       $pf5 |= 1 << 0;
    }
+   $ao .= $a;
 
    $a = shift @arg;
    if ($a ne ' ') {
       $pf5 |= 1 << 1;
    }
+   $ao .= $a;
 
    $a = shift @arg;
    if ($a ne ' ') {
       $pf5 |= 1 << 2;
    }
+   $ao .= $a;
 
    $a = shift @arg;
    if ($a ne ' ') {
       $pf5 |= 1 << 3;
    }
+   $ao .= $a;
 
    $a = shift @arg;
    if ($a ne ' ') {
       $pf5 |= 1 << 4;
    }
+   $ao .= $a;
 
    $a = shift @arg;
    if ($a ne ' ') {
       $pf5 |= 1 << 5;
    }
+   $ao .= $a;
 
    $a = shift @arg;
    if ($a ne ' ') {
       $pf5 |= 1 << 6;
    }
+   $ao .= $a;
 
    $a = shift @arg;
    if ($a ne ' ') {
       $pf5 |= 1 << 7;
    }
+   $ao .= $a;
 
-   $pf0 = sprintf("#\$%02X", $pf0);
-   $pf1 = sprintf("#\$%02X", $pf1);
-   $pf2 = sprintf("#\$%02X", $pf2);
-   $pf3 = sprintf("#\$%02X", $pf3);
-   $pf4 = sprintf("#\$%02X", $pf4);
-   $pf5 = sprintf("#\$%02X", $pf5);
+   $ao .= '|';
 
-   $ccount = 0;
-   print "      sta WSYNC\n";
-   print "         ldx tmp0         ; " . ccount(3) . "\n";
-   print "         stx COLUPF       ; " . ccount(3) . "\n";
-   print "         ldy #$i           ; " . ccount(2) . "\n";
-   print "         lda (LevelEnd),Y ; " . ccount(5) . " (maybe 6???)\n";
-   print "         sta GRP1         ; " . ccount(3) . "\n";
+   printf("   dc.b \$%02X, \$%02X, \$%02X, \$%02X, \$%02X, \$%02X ; $ao\n",
+      $pf0, $pf1, $pf2, $pf3, $pf4, $pf5);
 
-   print "         lda $pf0         ; " . ccount(2) . "\n";
-   print "         sta PF0          ; " . ccount(3) . " < 22\n";
-   print "         lda $pf1         ; " . ccount(2) . "\n";
-   print "         sta PF1          ; " . ccount(3) . " < 28\n";
-   print "         lda $pf2         ; " . ccount(2) . "\n";
-   print "         sta PF2          ; " . ccount(3) . " < 38\n";
-   print "         lda $pf3         ; " . ccount(2) . "\n";
-   print "         sta PF0          ; " . ccount(3) . " >= 28 < 49\n";
-   print "         lda $pf4         ; " . ccount(2) . "\n";
-   print "         sta PF1          ; " . ccount(3) . " >= 39 < 54\n";
-   print "         stx COLUP1       ; " . ccount(3) . "\n";
-   print "         nop              ; " . ccount(2) . "\n";
+#   $pf0 = sprintf("#\$%02X", $pf0);
+   $ao .= $a;
+#   $pf1 = sprintf("#\$%02X", $pf1);
+#   $pf2 = sprintf("#\$%02X", $pf2);
+#   $pf3 = sprintf("#\$%02X", $pf3);
+#   $pf4 = sprintf("#\$%02X", $pf4);
+#   $pf5 = sprintf("#\$%02X", $pf5);
+#
+#   $ccount = 0;
+#   print "      sta WSYNC\n";
+#   print "         ldx tmp0         ; " . ccount(3) . "\n";
+#   print "         stx COLUPF       ; " . ccount(3) . "\n";
+#   print "         ldy #$i           ; " . ccount(2) . "\n";
+#   print "         lda (LevelEnd),Y ; " . ccount(5) . " (maybe 6???)\n";
+#   print "         sta GRP1         ; " . ccount(3) . "\n";
+#
+#   print "         lda $pf0         ; " . ccount(2) . "\n";
+#   print "         sta PF0          ; " . ccount(3) . " < 22\n";
+#   print "         lda $pf1         ; " . ccount(2) . "\n";
+#   print "         sta PF1          ; " . ccount(3) . " < 28\n";
+#   print "         lda $pf2         ; " . ccount(2) . "\n";
+#   print "         sta PF2          ; " . ccount(3) . " < 38\n";
+#   print "         lda $pf3         ; " . ccount(2) . "\n";
+#   print "         sta PF0          ; " . ccount(3) . " >= 28 < 49\n";
+#   print "         lda $pf4         ; " . ccount(2) . "\n";
+#   print "         sta PF1          ; " . ccount(3) . " >= 39 < 54\n";
+#   print "         stx COLUP1       ; " . ccount(3) . "\n";
 #   print "         nop              ; " . ccount(2) . "\n";
-#   print "         nop              ; " . ccount(2) . "\n";
-   print "         lda $pf5         ; " . ccount(2) . "\n";
-   print "         sta PF2          ; " . ccount(3) . " >= 50 < 63\n";
-   print "         lda tmp0         ; " . ccount(3) . "\n";
-   print "         clc              ; " . ccount(2) . "\n";
-   print "         adc #\$F0         ; " . ccount(2) . "\n";
-   print "         ora #\$0F         ; " . ccount(2) . "\n";
-   print "         sta tmp0         ; " . ccount(3) . "\n";
-
+##   print "         nop              ; " . ccount(2) . "\n";
+##   print "         nop              ; " . ccount(2) . "\n";
+#   print "         lda $pf5         ; " . ccount(2) . "\n";
+#   print "         sta PF2          ; " . ccount(3) . " >= 50 < 63\n";
+#   print "         lda tmp0         ; " . ccount(3) . "\n";
+#   print "         clc              ; " . ccount(2) . "\n";
+#   print "         adc #\$F0         ; " . ccount(2) . "\n";
+#   print "         ora #\$0F         ; " . ccount(2) . "\n";
+#   print "         sta tmp0         ; " . ccount(3) . "\n";
 }
 
 print "   MAC LOGO\n";

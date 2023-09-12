@@ -31,7 +31,6 @@ Reset
         ldx #%00000000
         stx COLUBK
 
-
         ; and the player's color why not
         lda #$F8
         sta COLUP0
@@ -143,16 +142,79 @@ vblank_wait ; wait for timer to expire
         and #$80
         beq vblank_wait
 
-;X        lda MOVECOUNTER
-;X        cmp #$0
-;X        beq SixLinesLogo
-;X        jmp SixLinesLogo
+        lda MOVECOUNTER
+        cmp #$0
+        bne SixLinesLogo
+        jmp SixLinesLogo
 
         ; 192 scanlines of picture...
 SixLinesLogo
         lda #$00
         sta NUSIZ1
-        LOGO
+        ldy #$FF
+        ldx #$00
+        stx tmp1
+
+;;        LOGO
+        ;sta WSYNC
+        ;sta WSYNC
+        ;sta WSYNC
+        ;sta WSYNC
+        ;sta WSYNC
+        ;sta WSYNC
+        ;jmp EndLogo
+
+        ldx tmp0          ; 67 + 3
+        stx COLUPF        ; 3 + 3
+
+        ; repeated below...
+        ;iny               ; 67 + 2
+        ;lda (LevelEnd),Y  ; 69 + 5
+        ;sta GRP1          ; 74 + 3
+
+        ldx tmp1          ; 77 + 3
+
+        jmp SixLinesLogo2
+
+        align 256
+SixLinesLogo2
+        sta WSYNC
+
+        lda logo,X        ; 0 + 4
+        sta PF0           ; 4 + 3
+        lda logo+1,X      ; 7 + 4
+        sta PF1           ; 11 + 3
+        lda logo+2,X      ; 14 + 4
+        sta PF2           ; 18 + 3
+
+        nop               ; 21 + 2
+        nop               ; 23 + 2
+
+        lda logo+3,X      ; 27 + 4
+        sta PF0           ; 31 + 3 ; after 28 before 49
+
+        iny               ; 47 + 2
+        lda (LevelEnd),Y  ; 49 + 5
+        sta GRP1          ; 54 + 3
+
+
+        lda logo+4,X      ; 40 + 4
+        sta PF1           ; 44 + 3 ; after 39 before 54
+
+        lda logo+5,X      ; 51 + 4
+        sta PF2           ; 55 + 3 ; before 65
+
+        txa               ; 58 + 2
+        clc               ; 60 + 2
+        adc #$6           ; 62 + 2
+        sta tmp1          ; 64 + 2
+        tax               ; 66 + 2
+
+        cmp #36           ; 68 + 2
+        bne SixLinesLogo2 ; 70 + 3
+;;        LOGO
+
+EndLogo
         sta WSYNC
         ldx #$0
         stx PF0
@@ -161,54 +223,35 @@ SixLinesLogo
         jmp SbSPre
 
 SixLinesScore
-;X        lda #$04
-;X        sta NUSIZ1
-;X        ldy #0
+        lda #$04
+        sta NUSIZ1
+        ldy #0
 SixLinesScoreLoop
-;X        sta WSYNC
-;X        ldx tmp0                        ;; [0] + 3 = *3*
-;X        stx COLUP1                      ;; [3] + 3 = *6*
-;X        ldx #$0                         ;; [6] + 2 = *8*
-;X        stx PF0                         ;; [8] + 3 = *11*
-;X        lda (LevelEnd),Y                ;; [11] + 5 = *16*
-;X        sta GRP1                        ;; [16] + 3 = *19*
-;X        stx PF1                         ;; [19] + 3 = *22*
-;X        stx PF2                         ;; [22] + 3 = *25*
-;X
-;X        lda (tmp1),Y                    ;; [25] + 5 = *30*
-;X        sta GRP1                        ;; [30] + 3 = *33*
-;X
-;X        lda tmp0                        ;; [33] + 3 = *36*
-;X        clc                             ;; [36] + 2 = *38*
-;X        adc #$F0                        ;; [38] + 2 = *40*
-;X        ora #$0F                        ;; [40] + 2 = *42*
-;X        sta tmp0                        ;; [42] + 3 = *45*
-;X
-;X        iny                             ;; [45] + 2 = *47*
-;X        tya                             ;; [47] + 2 = *49*
-;X        cmp #$06                        ;; [49] + 2 = *51*
-;X        bne SixLinesScoreLoop           ;; [51] + 2 = *53*
-;X
-;X        sta WSYNC
+        sta WSYNC
+        ldx tmp0                        ;; [0] + 3 = *3*
+        stx COLUP1                      ;; [3] + 3 = *6*
+        ldx #$0                         ;; [6] + 2 = *8*
+        stx PF0                         ;; [8] + 3 = *11*
+        lda (LevelEnd),Y                ;; [11] + 5 = *16*
+        sta GRP1                        ;; [16] + 3 = *19*
+        stx PF1                         ;; [19] + 3 = *22*
+        stx PF2                         ;; [22] + 3 = *25*
 
+        lda (tmp1),Y                    ;; [25] + 5 = *30*
+        sta GRP1                        ;; [30] + 3 = *33*
 
-; For some obscure reason i cannot understand, commenting out the
-; movecount stuff with ;X threw off all kinds of timing.  i had
-; to put an "align 256" right before SbSPre to fix it.  Rather than
-; waste those bytes, i moved some lookup tables here instead,
-; which has the same effect of pushing SbSPre into the next page.
+        lda tmp0                        ;; [33] + 3 = *36*
+        clc                             ;; [36] + 2 = *38*
+        adc #$F0                        ;; [38] + 2 = *40*
+        ora #$0F                        ;; [40] + 2 = *42*
+        sta tmp0                        ;; [42] + 3 = *45*
 
-        ; for tmp0, we need an offset and a bit mask.  ugh
-        ; 20 possible values, lookup table
-offset_table
-        dc.b #0,#0,#1,#1,#1,#1,#2,#2,#2,#2,#3,#3,#4,#4,#4,#4,#5,#5,#5,#5
-mask_table
-        dc.b #$10,#$40
-        dc.b #$80,#$20,#$08,#$02
-        dc.b #$01,#$04,#$10,#$40
-        dc.b #$10,#$40
-        dc.b #$80,#$20,#$08,#$02
-        dc.b #$01,#$04,#$10,#$40
+        iny                             ;; [45] + 2 = *47*
+        tya                             ;; [47] + 2 = *49*
+        cmp #$06                        ;; [49] + 2 = *51*
+        bne SixLinesScoreLoop           ;; [51] + 2 = *53*
+
+        sta WSYNC
 
         ;align 256
 
@@ -549,7 +592,7 @@ SetupMap
 
         ldx #$0
         lda #$0
-;X        sta MOVECOUNTER
+        sta MOVECOUNTER
 
 SetupMap_Clearloop
         sta MAP,X
@@ -688,7 +731,7 @@ l00005
         lda #$01
         jsr Poke
 
-;X        inc MOVECOUNTER
+        inc MOVECOUNTER
 
         jmp l00006
 l00001
@@ -711,16 +754,16 @@ l00006
 
         rts
 
-;X numbers_table_0
-;X         dc.b #%0111, #%0001, #%0111, #%0111, #%0101, #%0111, #%0111, #%0111, #%0111, #%0111
-;X numbers_table_1
-;X         dc.b #%0101, #%0001, #%0001, #%0001, #%0101, #%0100, #%0100, #%0001, #%0101, #%0101
-;X numbers_table_2
-;X         dc.b #%0101, #%0001, #%0111, #%0111, #%0111, #%0111, #%0111, #%0001, #%0111, #%0111
-;X numbers_table_3
-;X         dc.b #%0101, #%0001, #%0100, #%0001, #%0001, #%0001, #%0101, #%0001, #%0101, #%0001
-;X numbers_table_4
-;X         dc.b #%0111, #%0001, #%0111, #%0111, #%0001, #%0111, #%0111, #%0001, #%0111, #%0111
+numbers_table_0
+        dc.b #%0111, #%0001, #%0111, #%0111, #%0101, #%0111, #%0111, #%0111, #%0111, #%0111
+numbers_table_1
+        dc.b #%0101, #%0001, #%0001, #%0001, #%0101, #%0100, #%0100, #%0001, #%0101, #%0101
+numbers_table_2
+        dc.b #%0101, #%0001, #%0111, #%0111, #%0111, #%0111, #%0111, #%0001, #%0111, #%0111
+numbers_table_3
+        dc.b #%0101, #%0001, #%0100, #%0001, #%0001, #%0001, #%0101, #%0001, #%0101, #%0001
+numbers_table_4
+        dc.b #%0111, #%0001, #%0111, #%0111, #%0001, #%0111, #%0111, #%0001, #%0111, #%0111
 
 Peek
         ; x and y hold a position, returns a=0 (empty), a=1 (block), a=2 (wall), a=x80 (goal)
@@ -893,6 +936,27 @@ note
         sta AUDT
 note_return
         rts
+
+; For some obscure reason i cannot understand, commenting out the
+; movecount stuff with ;X threw off all kinds of timing.  i had
+; to put an "align 256" right before SbSPre to fix it.  Rather than
+; waste those bytes, i moved some lookup tables here instead,
+; which has the same effect of pushing SbSPre into the next page.
+
+        ; for tmp0, we need an offset and a bit mask.  ugh
+        ; 20 possible values, lookup table
+offset_table
+        dc.b #0,#0,#1,#1,#1,#1,#2,#2,#2,#2,#3,#3,#4,#4,#4,#4,#5,#5,#5,#5
+mask_table
+        dc.b #$10,#$40
+        dc.b #$80,#$20,#$08,#$02
+        dc.b #$01,#$04,#$10,#$40
+        dc.b #$10,#$40
+        dc.b #$80,#$20,#$08,#$02
+        dc.b #$01,#$04,#$10,#$40
+
+logo
+        LOGO
 
         dc.b "Game Code Copyright (C) 2022 Adam Wozniak", 0
 

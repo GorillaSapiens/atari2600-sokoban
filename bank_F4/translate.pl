@@ -351,7 +351,7 @@ while (<>) {
                   push @start, encode($x,$y);
                }
             }
-            push @out, "   dc.b " . do_pf(@pf0) . " ; " . join("", @pf0) . "\n";
+            push @out, "   dc.b " . do_pf(@pf0) . " ; " . join("", @pf0) . " ; map\n";
             if ($y != $height - 1) {
                push @out, "   dc.b " . do_pf(@pf1) . " ; " . join("", @pf1) . "\n";
             }
